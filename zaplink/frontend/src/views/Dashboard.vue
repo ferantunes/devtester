@@ -4,7 +4,7 @@
 
     <ul>
       <li v-for="contact in contactList" :key="contact.id">
-        <span>{{contact.name}}<span> <br>
+        <span>{{contact.name}}</span> <br>
         <small>{{contact.number}}</small> <br>
         <small>{{contact.description}}</small> <br>
         <button>Conversar</button>
