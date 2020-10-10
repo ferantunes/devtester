@@ -12,8 +12,17 @@ module.exports = {
             description: request.payload.description
         });
 
+        if (!contact.name)
+            return h.response({message: 'Name is required.'}).code(409);
+
+        if (!contact.number)
+            return h.response({message: 'Number is required.'}).code(409);
+
+        if (!contact.description)
+            return h.response({message: 'Description is required.'}).code(409);
+
         let result = await contact.save();
-        
+
         return h.response(result).code(200);
     },
 
