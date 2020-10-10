@@ -41,27 +41,18 @@ export default {
   name: "Dashboard",
   data() {
     return {
-      contactList: [
-        {
-          id: 1,
-          name: "Fernando Papito",
-          number: "11 999999999",
-          description: "Solicitar consultoria em DevOps",
-        },
-        {
-          id: 2,
-          name: "João da Silva",
-          number: "11 999999999",
-          description: "Solicitar para aulas de inglês",
-        },
-        {
-          id: 3,
-          name: "Maria da Silva",
-          number: "11 999999999",
-          description: "Solicitar para aulas de francês",
-        },
-      ],
+      contactList: [],
     };
   },
+  methods: {
+    list() {
+      window.axios.get('/contacts').then(async (res) => {
+        this.contactList = await res.data;
+      })
+    }
+  },
+  mounted() {
+    this.list();
+  }
 };
 </script>

@@ -6,6 +6,11 @@ import router from './router'
 import Buefy from 'buefy'
 import 'buefy/dist/buefy.css'
 
+//Importação do axios
+window.axios = require('axios');
+//configuração da url padrão da API que vai ser consumido pelo VUE.js
+window.axios.defaults.baseURL = 'http://localhost:3000';
+
 Vue.use(Buefy)
 
 Vue.config.productionTip = false
