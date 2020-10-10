@@ -4,7 +4,7 @@ const { concat } = require('../routes/contact.routes');
 module.exports = {
     async create(request, h) {
 
-        console.log(request.payload);
+        // console.log(request.payload);
 
         const contact = new contactModel({
             name: request.payload.name,
@@ -12,7 +12,9 @@ module.exports = {
             description: request.payload.description
         });
 
-        contact.save();
+        let result = await contact.save();
+        
+        return h.response(result).code(200);
     },
 
 
