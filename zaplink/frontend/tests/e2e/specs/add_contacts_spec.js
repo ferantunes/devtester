@@ -9,66 +9,60 @@ describe('Cadastro de Contatos', () => {
 
         describe('Quando submeto o cadastro completo', () => {
             before(() => {
-                cy.visit('/dashboard');
-                cy.get('#addNewContact').click();
-
-                cy.get('.input-name input').type(contact.name);
-                cy.get('.input-number input').type(contact.number);
-                cy.get('.text-description textarea').type(contact.description);
-
-                cy.get('#saveButton').click();
+                cy.dash();
+                cy.createContact(contact);
             });
 
             it('Deve cadastrar esse contato', () => {
-                cy.get('.contact-list').contains(contact.name);
+                cy.contactList().contains(contact.name);
             });
         });
 
         describe('Quando submeto o cadastro sem o nome', () => {
+            let contact = {
+                number: "11 999999999",
+                description: "Orçamento para consultoria em QA e DevOps."
+            }
+    
             before(() => {
-                cy.visit('/dashboard');
-                cy.get('#addNewContact').click();
-
-                cy.get('.input-number input').type(contact.number);
-                cy.get('.text-description textarea').type(contact.description);
-
-                cy.get('#saveButton').click();
+                cy.dash();
+                cy.createContact(contact);
             });
 
             it('Deve mostrar uma notificação', () => {
-                cy.get('.input-name small').contains('Nome é obrigatório.');
+                cy.alertName().contains('Nome é obrigatório.');
             });
         });
 
         describe('Quando submeto o cadastro sem o whatsapp', () => {
-            before(() => {
-                cy.visit('/dashboard');
-                cy.get('#addNewContact').click();
-                
-                cy.get('.input-name input').type(contact.name);
-                cy.get('.text-description textarea').type(contact.description);
+            let contact = {
+                name: "Fernando Papito",
+                description: "Orçamento para consultoria em QA e DevOps."
+            }
 
-                cy.get('#saveButton').click();
+            before(() => {
+                cy.dash();
+                cy.createContact(contact);
             });
 
             it('Deve mostrar uma notificação', () => {
-                cy.get('.input-number small').contains('WhatsApp é obrigatório.');
+                cy.alertNumber().contains('WhatsApp é obrigatório.');
             });
         });
 
         describe('Quando submeto o cadastro sem o assunto', () => {
-            before(() => {
-                cy.visit('/dashboard');
-                cy.get('#addNewContact').click();
-                
-                cy.get('.input-name input').type(contact.name);
-                cy.get('.input-number input').type(contact.number);
+            let contact = {
+                name: "Fernando Papito",
+                number: "11 999999999"
+            }
 
-                cy.get('#saveButton').click();
+            before(() => {
+                cy.dash();
+                cy.createContact(contact);
             });
 
             it('Deve mostrar uma notificação', () => {
-                cy.get('.text-description small').contains('Assunto é obrigatório.');
+                cy.alertDescription().contains('Assunto é obrigatório.');
             });
         });
     });

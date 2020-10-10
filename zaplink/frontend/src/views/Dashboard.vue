@@ -57,7 +57,7 @@
               <button type="button" class="delete" @click="showContactAddModal = false"/>
             </header>
             <section class="modal-card-body">
-              <div class="field input-name">
+              <div class="field input-full-name">
                 <input class="input is-primary" v-model="form.name" placeholder="Nome completo"/>
                 <small class="has-text-danger" v-if="errorName === true">Nome é obrigatório.</small>
               </div>
