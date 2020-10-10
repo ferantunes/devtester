@@ -79,7 +79,23 @@ export default {
   },
   methods: {
     create() {
-      console.log(this.form);
+      // console.log(this.form);
+
+      if (this.form.name === '') {
+        alert('Nome é obrigatório.');
+        return;
+      }
+
+       if (this.form.number === '') {
+        alert('WhatsApp é obrigatório.');
+        return;
+      }
+
+       if (this.form.description === '') {
+        alert('Assunto é obrigatório.');
+        return;
+      }
+
       window.axios.post('/contacts', this.form).then(async (res) => {
         await res.data;
         this.showContactAddModal = false;
