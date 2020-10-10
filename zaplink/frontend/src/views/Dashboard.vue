@@ -3,10 +3,19 @@
     <div class="container">
       <h4 class="title is-4">Seu gerenciador digital de contatos</h4>
 
-      <button class="button is-success is-medium" @click="showContactAddModal = true">+</button>
+      <button
+        class="button is-success is-medium"
+        @click="showContactAddModal = true"
+      >
+        +
+      </button>
 
       <div class="columns is-multiline">
-        <div class="column is-4" v-for="contact in contactList" :key="contact.id">
+        <div
+          class="column is-4"
+          v-for="contact in contactList"
+          :key="contact.id"
+        >
           <div class="card">
             <div class="card-content">
               <div class="media">
@@ -33,29 +42,49 @@
         </div>
       </div>
 
-      <b-modal v-model="showContactAddModal" has-modal-card trap-focus :destroy-on-hide="false" aria-role="dialog" aria-modal>
+      <b-modal
+        v-model="showContactAddModal"
+        has-modal-card
+        trap-focus
+        :destroy-on-hide="false"
+        aria-role="dialog"
+        aria-modal
+      >
         <form action="">
-                <div class="modal-card" style="width: 450px">
-                    <header class="modal-card-head">
-                        <p class="modal-card-title">Novo Contato</p>
-                        <button type="button" class="delete" @click="showContactAddModal = false"/>
-                    </header>
-                    <section class="modal-card-body">
-                        <div class="field">
-                          <input class="input is-primary" v-model="form.name" placeholder="Nome completo">
-                        </div>
-                        <div class="field">
-                          <input class="input is-primary" v-model="form.number" placeholder="WhatsApp">
-                        </div>
-                        <div class="field">
-                          <textarea class="textarea is-primary" v-model="form.description" placeholder="Assunto"></textarea>
-                        </div>
-                    </section>
-                    <footer class="modal-card-foot">
-                        <button type="button" class="button is-success" @click="create">Cadastrar</button>
-                    </footer>
-                </div>
-            </form>
+          <div class="modal-card" style="width: 450px">
+            <header class="modal-card-head">
+              <p class="modal-card-title">Novo Contato</p>
+              <button
+                type="button"
+                class="delete"
+                @click="showContactAddModal = false"
+              />
+            </header>
+            <section class="modal-card-body">
+              <div class="field">
+                <input
+                  class="input is-primary"
+                  v-model="form.name"
+                  placeholder="Nome completo"
+                />
+                <small class="has-text-danger" v-if="errorName === true">Nome é obrigatório.</small>
+              </div>
+              <div class="field">
+                <input class="input is-primary"  v-model="form.number" placeholder="WhatsApp"/>
+                <small class="has-text-danger" v-if="errorNumber === true">WhatsApp é obrigatório.</small>
+              </div>
+              <div class="field">
+                <textarea class="textarea is-primary" v-model="form.description" placeholder="Assunto"></textarea>
+                <small class="has-text-danger" v-if="errorDescription === true">Assunto é obrigatório.</small>
+              </div>
+            </section>
+            <footer class="modal-card-foot">
+              <button type="button" class="button is-success" @click="create">
+                Cadastrar
+              </button>
+            </footer>
+          </div>
+        </form>
       </b-modal>
     </div>
   </div>
@@ -70,37 +99,46 @@ export default {
     return {
       contactList: [],
       showContactAddModal: false,
+      errorName: false,
+      errorNumber: false,
+      errorDescription: false,
       form: {
-        name: 'Fernando Papito',
-        number: '11 999999999',
-        description: 'Consultoria em QA e DevOps'
-      }
+        name: "Fernando Papito",
+        number: "11 999999999",
+        description: "Consultoria em QA e DevOps",
+      },
     };
   },
   methods: {
     create() {
       // console.log(this.form);
+      this.errorName = false;
+      this.errorNumber = false;
+      this.errorDescription = false;
 
-      if (this.form.name === '') {
-        alert('Nome é obrigatório.');
-        return;
+      if (this.form.name === "") {
+        this.errorName = true;
       }
 
-       if (this.form.number === '') {
-        alert('WhatsApp é obrigatório.');
-        return;
+      if (this.form.number === "") {
+        this.errorNumber = true;
       }
 
-       if (this.form.description === '') {
-        alert('Assunto é obrigatório.');
-        return;
+      if (this.form.description === "") {
+        this.errorDescription = true;
       }
 
-      window.axios.post('/contacts', this.form).then(async (res) => {
-        await res.data;
-        this.showContactAddModal = false;
-        this.list();
-      });
+      if (
+        this.errorName === false &&
+        this.errorNumber === false &&
+        this.errorDescription === false
+      ) {
+        window.axios.post("/contacts", this.form).then(async (res) => {
+          await res.data;
+          this.showContactAddModal = false;
+          this.list();
+        });
+      }
     },
     list() {
       window.axios.get("/contacts").then(async (res) => {
