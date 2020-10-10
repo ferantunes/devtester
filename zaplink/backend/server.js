@@ -17,30 +17,32 @@ mongoose.connection.on('erros', (er) =>{
 
 const contactRoutes = require('./routes/contact.routes');
 
-const init = async () => {
+const server = Hapi.server({
+    port: 3000,
+    host: 'localhost'
+});
 
-    const server = Hapi.server({
-        port: 3000,
-        host: 'localhost'
-    });
-
-    server.route({
-        method: 'GET',
-        path: '/',
-        handler: (request, h) => {
-            return {
-                message: 'Welcome to ZapLink API',
-                company: 'QA Ninja',
-                course: 'DevTester'
-            }
+server.route({
+    method: 'GET',
+    path: '/',
+    handler: (request, h) => {
+        return {
+            message: 'Welcome to ZapLink API',
+            company: 'QA Ninja',
+            course: 'DevTester'
         }
-    });
+    }
+});
 
-    server.route(contactRoutes);
+server.route(contactRoutes);
 
-    await server.start();
+server.start((er) => {
+    if (er)
+        throw err;
+    
     console.log('Server running on %s', server.info.uri);
-};
+});
+
 
 process.on('unhandledRejection', (err) => {
 
@@ -48,4 +50,6 @@ process.on('unhandledRejection', (err) => {
     process.exit(1);
 });
 
-init();
+exports.init = async () => {
+    return server;
+}
