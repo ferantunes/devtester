@@ -1,6 +1,20 @@
 'use strict';
 
 const Hapi = require('@hapi/hapi');
+const mongoose = require('mongoose');
+
+const mongoURL = 'mongodb+srv://qaninja:qaninja@cluster0.pxj03.gcp.mongodb.net/zaplinkdb?retryWrites=true&w=majority';
+
+mongoose.connect(mongoURL, { useNewUrlParser: true, useUnifiedTopology: true });
+
+mongoose.connection.on('connected', () =>{
+    console.log('MongoDB Connected!!');
+});
+
+mongoose.connection.on('erros', (er) =>{
+    console.log('MongoDB Failed ' + er);
+});
+
 const contactRoutes = require('./routes/contact.routes');
 
 const init = async () => {
