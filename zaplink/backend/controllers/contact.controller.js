@@ -24,6 +24,11 @@ module.exports = {
         if (!contact.description)
             return h.response({ message: 'Description is required.' }).code(409);
 
+        const duplicado = await contactModel.findOne({number: contact.number}).exec();
+
+        if (duplicado)
+            return h.response({error: 'Duplicated number.'}).code(409);
+
         try {
             let result = await contact.save();
             return h.response(result).code(200);

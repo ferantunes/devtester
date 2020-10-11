@@ -14,7 +14,8 @@ describe('Busca', () => {
                 headers: {
                     'Content-Type': 'application/json'
                 },
-                body: contact
+                body: contact,
+                failOnStatusCode: false
             }).then((response) => {
                 cy.log(JSON.stringify(response.body));
             })
