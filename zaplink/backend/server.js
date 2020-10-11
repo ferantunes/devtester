@@ -15,6 +15,12 @@ mongoose.connection.on('erros', (er) =>{
     console.log('MongoDB Failed ' + er);
 });
 
+console.log(`Ambiente => ${process.env.NODE_ENV}`);
+
+if(process.env.NODE_ENV === 'test') {
+    mongoose.connection.dropDatabase();
+}
+
 const contactRoutes = require('./routes/contact.routes');
 
 const server = Hapi.server({
