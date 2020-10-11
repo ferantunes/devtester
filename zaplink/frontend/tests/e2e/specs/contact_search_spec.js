@@ -10,6 +10,7 @@ describe('Busca', () => {
         before(() => {
             cy.dash();
             cy.searchContact(contact.number);
+            cy.get('#loader', {timetou: 5000}).should('not.visible');
         })
 
         it('Devo ver somente esse contato no dashboard', () => {
