@@ -1,3 +1,4 @@
+const { remove } = require('../models/contact.model');
 const contactModel = require('../models/contact.model');
 const { concat } = require('../routes/contact.routes');
 
@@ -37,6 +38,14 @@ module.exports = {
         }
     },
 
+    async remove(request, h) {
+        try {
+            await contactModel.deleteOne({_id: request.params.contactId});
+            return h.response({}).code(204);
+        } catch (error) {
+            return h.response(error).code(500);
+        }
+    },
 
     async list(request, h) {
         const contacts = await contactModel.find().exec();

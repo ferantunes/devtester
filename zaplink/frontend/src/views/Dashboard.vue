@@ -37,7 +37,7 @@
       </article>
 
       <div class="contact-list columns is-multiline" v-if="isLoading === false">
-        <div class="column is-4" v-for="contact in contactList" :key="contact.id">
+        <div class="column is-4" v-for="contact in contactList" :key="contact._id">
           <div class="card">
             <div class="card-content">
               <div class="media">
@@ -57,7 +57,7 @@
             </div>
             <footer class="card-footer">
               <a href="#" class="card-footer-item">Conversar</a>
-              <a href="#" class="card-footer-item">Apagar</a>
+              <a href="#" class="card-footer-item" @click="remove(contact._id)">Apagar</a>
             </footer>
           </div>
         </div>
@@ -73,7 +73,7 @@
             <section class="modal-card-body">
               <div class="field input-full-name">
                 <input class="input is-primary" v-model="form.name" placeholder="Nome completo"/>
-                <small class="has-text-danger" v-if="errorName === true">Nome é obrigatório.</smalls>
+                <small class="has-text-danger" v-if="errorName === true">Nome é obrigatório.</small>
               </div>
               <div class="field input-number">
                 <input class="input is-primary" v-model="form.number" placeholder="WhatsApp"/>
@@ -158,10 +158,18 @@ export default {
         });
       }
     },
+    remove(contactId) {
+      // console.log(contactId);
+      window.axios.delete('/contacts/' + contactId).then(async(resposta) => {
+        await resposta.data;
+        this.list();
+      })
+    },
     list() {
       this.isLoading = true;
       window.axios.get("/contacts").then(async (res) => {
         this.contactList = await res.data;
+        // console.log(this.contactList);
         this.isLoading = false;
       });
     },
