@@ -42,7 +42,7 @@ describe('Busca', () => {
         })
 
         it('Deve retornar mensagem de alerta', () => {
-            cy.get('.message-body').contains('Contato não encontrado =(');
+            cy.get('.message-body').contains('Contato não encontrado.');
         });
     })
 })

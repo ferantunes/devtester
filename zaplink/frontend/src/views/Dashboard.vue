@@ -13,28 +13,15 @@
         <!-- Right side -->
         <div class="level-right">
           <div class="level-item">
-            <button
-              id="addNewContact"
-              class="button is-success"
-              @click="showContactAddModal = true"
-            >
-              +
-            </button>
+            <button id="addNewContact" class="button is-success" @click="showContactAddModal = true">+</button>
           </div>
           <div class="level-item">
             <div class="field has-addons">
               <p class="control">
-                <input
-                  class="input"
-                  type="text"
-                  v-model="searchInput"
-                  placeholder="Número do Whats"
-                />
+                <input class="input" type="text" v-model="searchInput" placeholder="Número do Whats"/>
               </p>
               <p class="control">
-                <button class="button is-primary" @click="search">
-                  Buscar
-                </button>
+                <button class="button is-primary" @click="search">Buscar</button>
               </p>
             </div>
           </div>
@@ -42,27 +29,21 @@
       </nav>
 
       <div id="loader" v-if="isLoading === true">
-        <img src="../assets/loading.gif" />
+        <img src="../assets/loading.gif"/>
       </div>
 
       <article class="message is-danger" v-if="contactList.length === 0">
-        <div class="message-body">
-          Contato não entrado =(
-        </div>
+        <div class="message-body">Contato não encontrado.</div>
       </article>
 
       <div class="contact-list columns is-multiline" v-if="isLoading === false">
-        <div
-          class="column is-4"
-          v-for="contact in contactList"
-          :key="contact.id"
-        >
+        <div class="column is-4" v-for="contact in contactList" :key="contact.id">
           <div class="card">
             <div class="card-content">
               <div class="media">
                 <div class="media-left">
                   <figure class="image is-48x48">
-                    <img src="../assets/whatsapp.svg" alt="Logo WhatsApp" />
+                    <img src="../assets/whatsapp.svg" alt="Logo WhatsApp"/>
                   </figure>
                 </div>
                 <div class="media-content">
@@ -70,7 +51,6 @@
                   <p class="subtitle is-6">{{ contact.number }}</p>
                 </div>
               </div>
-
               <div class="content">
                 {{ contact.description }}
               </div>
@@ -83,65 +63,29 @@
         </div>
       </div>
 
-      <b-modal
-        v-model="showContactAddModal"
-        has-modal-card
-        trap-focus
-        :destroy-on-hide="false"
-        aria-role="dialog"
-        aria-modal
-      >
+      <b-modal v-model="showContactAddModal" has-modal-card trap-focus :destroy-on-hide="false" aria-role="dialog" aria-modal>
         <form action="">
           <div class="modal-card" style="width: 450px">
             <header class="modal-card-head">
               <p class="modal-card-title">Novo Contato</p>
-              <button
-                type="button"
-                class="delete"
-                @click="showContactAddModal = false"
-              />
+              <button type="button" class="delete" @click="showContactAddModal = false"/>
             </header>
             <section class="modal-card-body">
               <div class="field input-full-name">
-                <input
-                  class="input is-primary"
-                  v-model="form.name"
-                  placeholder="Nome completo"
-                />
-                <small class="has-text-danger" v-if="errorName === true"
-                  >Nome é obrigatório.</small
-                >
+                <input class="input is-primary" v-model="form.name" placeholder="Nome completo"/>
+                <small class="has-text-danger" v-if="errorName === true">Nome é obrigatório.</smalls>
               </div>
               <div class="field input-number">
-                <input
-                  class="input is-primary"
-                  v-model="form.number"
-                  placeholder="WhatsApp"
-                />
-                <small class="has-text-danger" v-if="errorNumber === true"
-                  >WhatsApp é obrigatório.</small
-                >
+                <input class="input is-primary" v-model="form.number" placeholder="WhatsApp"/>
+                <small class="has-text-danger" v-if="errorNumber === true">WhatsApp é obrigatório.</small>
               </div>
               <div class="field text-description">
-                <textarea
-                  class="textarea is-primary"
-                  v-model="form.description"
-                  placeholder="Assunto"
-                ></textarea>
-                <small class="has-text-danger" v-if="errorDescription === true"
-                  >Assunto é obrigatório.</small
-                >
+                <textarea class="textarea is-primary" v-model="form.description" placeholder="Assunto"></textarea>
+                <small class="has-text-danger" v-if="errorDescription === true">Assunto é obrigatório.</small>
               </div>
             </section>
             <footer class="modal-card-foot">
-              <button
-                id="saveButton"
-                type="button"
-                class="button is-success"
-                @click="create"
-              >
-                Cadastrar
-              </button>
+              <button id="saveButton" type="button" class="button is-success" @click="create">Cadastrar</button>
             </footer>
           </div>
         </form>
