@@ -18,10 +18,10 @@
           <div class="level-item">
             <div class="field has-addons">
               <p class="control">
-                <input class="input" type="text" placeholder="Número do Whats">
+                <input class="input" type="text" v-model="searchInput" placeholder="Número do Whats">
               </p>
               <p class="control">
-                <button class="button is-primary">Buscar</button>
+                <button class="button is-primary" @click="search">Buscar</button>
               </p>
             </div>
           </div>
@@ -31,11 +31,7 @@
       
 
       <div class="contact-list columns is-multiline">
-        <div
-          class="column is-4"
-          v-for="contact in contactList"
-          :key="contact.id"
-        >
+        <div class="column is-4" v-for="contact in contactList" :key="contact.id">
           <div class="card">
             <div class="card-content">
               <div class="media">
@@ -62,14 +58,7 @@
         </div>
       </div>
 
-      <b-modal
-        v-model="showContactAddModal"
-        has-modal-card
-        trap-focus
-        :destroy-on-hide="false"
-        aria-role="dialog"
-        aria-modal
-      >
+      <b-modal v-model="showContactAddModal" has-modal-card trap-focus :destroy-on-hide="false" aria-role="dialog" aria-modal>
         <form action="">
           <div class="modal-card" style="width: 450px">
             <header class="modal-card-head">
@@ -103,8 +92,7 @@
 </template>
 
 <script>
-// @ is an alias to /src
-
+// @ is an alias to /srcss
 export default {
   name: "Dashboard",
   data() {
@@ -114,6 +102,7 @@ export default {
       errorName: false,
       errorNumber: false,
       errorDescription: false,
+      searchInput: '',
       form: {
         name: "",
         number: "",
@@ -122,6 +111,14 @@ export default {
     };
   },
   methods: {
+    search() {
+      // console.log(this.searchInput);
+      if(this.searchInput != ''){
+        this.contactList = this.contactList.filter((contact) => contact.number === this.searchInput);
+      } else {
+        this.list();
+      }
+    },
     create() {
       // console.log(this.form);
       this.errorName = false;
