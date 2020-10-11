@@ -6,8 +6,21 @@ describe('Busca', () => {
         description: 'Aulas de Bateria'
     }
     //Apostofro, é usado quando quero fazer uma interpolação com alguma informação
-    describe(`Quando busco pelo contato ${contact.name}`, () =>{
+    context(`Dado que eu tenho o seguinte contato ${contact.name}`, () =>{
         before(() => {
+            cy.request({
+                method: 'POST',
+                url: 'http://localhost:3000/contacts',
+                headers: {
+                    'Content-Type': 'application/json'
+                },
+                body: contact
+            }).then((response) => {
+                cy.log(JSON.stringify(response.body));
+            })
+        })
+
+        it('Quando faço a busca desse contato', () => {
             cy.dash();
             cy.searchContact(contact.number);
             cy.get('#loader', {timetou: 5000}).should('not.visible');
