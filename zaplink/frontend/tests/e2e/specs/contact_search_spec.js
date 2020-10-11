@@ -6,7 +6,7 @@ describe('Busca', () => {
         description: 'Aulas de Bateria'
     }
     //Apostofro, é usado quando quero fazer uma interpolação com alguma informação
-    context(`Dado que eu tenho o seguinte contato ${contact.name}`, () =>{
+    context(`Dado que eu tenho o seguinte contato ${contact.name}`, () => {
         before(() => {
             cy.request({
                 method: 'POST',
@@ -24,7 +24,7 @@ describe('Busca', () => {
         it('Quando faço a busca desse contato', () => {
             cy.dash();
             cy.searchContact(contact.number);
-            cy.get('#loader', {timetou: 5000}).should('not.visible');
+            cy.get('#loader', { timetou: 5000 }).should('not.visible');
         })
 
         it('Devo ver somente esse contato no dashboard', () => {
@@ -32,5 +32,17 @@ describe('Busca', () => {
             cy.contactItem().contains(contact.name);
             cy.contactItem().contains(contact.description);
         })
+    })
+
+    context('Quando busco por um contato não cadastrado', () => {
+        before(() => {
+            cy.dash();
+            cy.searchContact('11555555555');
+            cy.get('#loader', { timetou: 5000 }).should('not.visible');
+        })
+
+        it('Deve retornar mensagem de alerta', () => {
+            cy.get('.message-body').contains('Contato não encontrado =(');
+        });
     })
 })
