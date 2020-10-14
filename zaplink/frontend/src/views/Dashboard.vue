@@ -56,7 +56,7 @@
               </div>
             </div>
             <footer class="card-footer">
-              <a href="#" class="card-footer-item">Conversar</a>
+              <a :href="zaplink(contact.number)" class="card-footer-item">Conversar</a>
               <a href="#" class="card-footer-item btn-remove" @click="remove(contact._id)">Apagar</a>
             </footer>
           </div>
@@ -115,6 +115,9 @@ export default {
     };
   },
   methods: {
+    zaplink(number) {
+      return `https://api.whatsapp.com/send/?phone=55${number}`;
+    },
     search() {
       // console.log(this.searchInput);
       this.isLoading = true;
