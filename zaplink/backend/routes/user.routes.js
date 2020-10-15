@@ -2,7 +2,7 @@ const UserController = require('../controllers/user.controller');
 
 module.exports = [
     {
-        method: 'GET',
+        method: 'POST',
         path: '/user',
         handler: UserController.create
     },
