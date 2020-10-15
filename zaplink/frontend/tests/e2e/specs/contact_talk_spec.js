@@ -1,0 +1,33 @@
+describe('Conversar', () => {
+
+    const contact = {
+        name: 'Maiara e Maraisa',
+        number: '11987654321',
+        description: 'Orçamento para show da virada'
+    }
+    
+    context(`Dado que quero conversar com o contato ${contact.name}`, () => {
+        before(() => {
+            cy.request({
+                method: 'POST',
+                url: 'http://localhost:3000/contacts',
+                headers: {
+                    'Content-Type': 'application/json'
+                },
+                body: contact,
+                failOnStatusCode: false
+            }).then((response) => {
+                cy.log(JSON.stringify(response.body));
+            })
+        })
+
+        it('Quando acesso o dashboard', () => {
+            cy.dash();
+        })
+
+        it('Devo ver a propriedade href com o link do WhatsApp Web', () => {
+            const externalLink = `https://api.whatsapp.com/send/?phone=55${contact.number}`;
+            cy.get(`a[href$="${contact.number}"]`).should('have.attr', 'href', externalLink);
+        });
+    })
+})
