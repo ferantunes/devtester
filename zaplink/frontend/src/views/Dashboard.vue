@@ -1,5 +1,6 @@
 <template>
   <div class="dashboard">
+    <Navbar />
     <div class="container">
       <!-- Main container -->
       <nav class="level">
@@ -95,9 +96,14 @@
 </template>
 
 <script>
-// @ is an alias to /srcss
+
+import Navbar from '../components/Navbar.vue'
+
 export default {
   name: "Dashboard",
+  components: {
+    Navbar
+  },
   data() {
     return {
       isLoading: false,
