@@ -27,10 +27,26 @@ module.exports = {
             let result = await user.save()
             return h.response(result).code(200);
         } catch (error) {
-            return h.response(error).code(500)
+            return h.response(error).code(500);
         }
     },
     async login(request, h) {
-        return null;
+        // console.log(request.payload);
+        // console.log(email);
+        // console.log(password);
+        if (request.payload === null)
+            return h.response({ message: 'Not JSON' }).code(400);
+
+        const { email, password } = request.payload;
+
+        try {
+            const user = await UserModel.findOne({email: email, password: md5(password)}).exec();
+            // console.log(user);
+            if(!user)
+                return h.response({error: 'Unauthorized'}).code(401);
+            return h.response({userToken: user._id}).code(200);
+        } catch (error) {
+            return h.response(error).code(500);
+        }
     }
 }
