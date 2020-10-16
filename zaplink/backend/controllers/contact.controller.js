@@ -1,19 +1,34 @@
-const { remove } = require('../models/contact.model');
 const contactModel = require('../models/contact.model');
-const { concat } = require('../routes/contact.routes');
+const UserModel = require('../models/user.model');
+const userController = require('./user.controller');
+
+const auth = async (request, userId) => {
+    const foundUser = await UserModel.findById(userId);
+
+    if(!foundUser)
+        throw {error: 'Unauthorized', code: 401}
+}
 
 module.exports = {
     async create(request, h) {
 
         // console.log(request.payload);
+        const userId = request.headers.authorization;
 
         if (request.payload === null)
             return h.response({ message: 'Not JSON.' }).code(400);
 
+        try {
+            await auth(request, userId);
+        } catch (error) {
+            return h.response(error).code(error.code);
+        }
+
         const contact = new contactModel({
             name: request.payload.name,
             number: request.payload.number,
-            description: request.payload.description
+            description: request.payload.description,
+            userId: userId
         });
 
         if (!contact.name)
@@ -25,7 +40,7 @@ module.exports = {
         if (!contact.description)
             return h.response({ message: 'Description is required.' }).code(409);
 
-        const duplicado = await contactModel.findOne({number: contact.number}).exec();
+        const duplicado = await contactModel.findOne({number: contact.number, userId: userId}).exec();
 
         if (duplicado)
             return h.response({error: 'Duplicated number.'}).code(409);
