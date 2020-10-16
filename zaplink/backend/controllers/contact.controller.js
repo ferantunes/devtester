@@ -2,7 +2,7 @@ const contactModel = require('../models/contact.model');
 const UserModel = require('../models/user.model');
 const userController = require('./user.controller');
 
-const auth = async (request, userId) => {
+const auth = async (userId) => {
     const foundUser = await UserModel.findById(userId);
 
     if(!foundUser)
@@ -19,7 +19,7 @@ module.exports = {
             return h.response({ message: 'Not JSON.' }).code(400);
 
         try {
-            await auth(request, userId);
+            await auth(userId);
         } catch (error) {
             return h.response(error).code(error.code);
         }
@@ -54,8 +54,21 @@ module.exports = {
     },
 
     async remove(request, h) {
+        const userId = request.headers.authorization;
+
         try {
-            await contactModel.deleteOne({_id: request.params.contactId});
+            await auth(userId);
+        } catch (error) {
+            return h.response(error).code(error.code);
+        }
+
+        try {
+            const user = await contactModel.findOne({_id: request.params.contactId, userId: userId});
+
+            if(!user)
+                return h.response({}).code(404);
+
+            await contactModel.deleteOne({_id: request.params.contactId, userId: userId});
             return h.response({}).code(204);
         } catch (error) {
             return h.response(error).code(500);
@@ -63,7 +76,15 @@ module.exports = {
     },
 
     async list(request, h) {
-        const contacts = await contactModel.find().exec();
+        const userId = request.headers.authorization;
+
+        try {
+            await auth(userId);
+        } catch (error) {
+            return h.response(error).code(error.code);
+        }
+
+        const contacts = await contactModel.find({ userId: userId }).exec();
         return contacts;
     }
 }
