@@ -14,7 +14,7 @@
                 <form>
                     <div class="field">
                     <p class="control has-icons-left has-icons-right">
-                        <input class="input" v-model="form.email" type="email" placeholder="Seu email" />
+                        <input name="email" class="input" v-model="form.email" type="email" placeholder="Seu email" />
                         <span class="icon is-small is-left">
                         <i class="fas fa-envelope"></i>
                         </span>
@@ -25,7 +25,7 @@
                     </div>
                     <div class="field">
                     <p class="control has-icons-left">
-                        <input class="input" v-model="form.password" type="password" placeholder="Sua senha"/>
+                        <input name="password" class="input" v-model="form.password" type="password" placeholder="Sua senha"/>
                         <span class="icon is-small is-left">
                         <i class="fas fa-lock"></i>
                         </span>
@@ -40,7 +40,7 @@
 
                     <div class="field">
                     <p class="control">
-                        <button type="button" @click="login()" class="button is-success">Entrar</button>
+                        <button id="sigIn" type="button" @click="login()" class="button is-success">Entrar</button>
                     </p>
                     </div>
                 </form>
