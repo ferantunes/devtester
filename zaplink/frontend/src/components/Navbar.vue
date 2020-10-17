@@ -16,7 +16,7 @@
         <div class="navbar-end">
           <div class="navbar-item">
             <div class="buttons">
-              <a class="button is-black">
+              <a class="button is-black" @click="logout()">
                 <strong>Sair</strong>
               </a>
             </div>
@@ -26,6 +26,18 @@
     </div>
   </nav>
 </template>
+
+<script>
+export default {
+  name: 'Navbar',
+  methods: {
+    logout() {
+      localStorage.removeItem('user_token');
+      this.$router.push('/');
+    }
+  }
+}
+</script>
 
 <style scoped>
 .navbar {
