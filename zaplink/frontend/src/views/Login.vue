@@ -31,6 +31,13 @@
                         </span>
                     </p>
                     </div>
+
+                    <article v-if="alertError" class="message is-danger">
+                      <div class="message-body">
+                        {{alertError}}
+                      </div>
+                    </article>
+
                     <div class="field">
                     <p class="control">
                         <button type="button" @click="login()" class="button is-success">Entrar</button>
@@ -55,6 +62,7 @@ export default {
   name: 'Login',
   data() {
     return {
+      alertError: '',
       form: {
         email: '',
         password: ''
@@ -64,10 +72,26 @@ export default {
   methods: {
     login() {
       // console.log(this.form);
-      window.axios.post('/session', this.form).then(async (res) => {
-        const resposta = await res.data;
-        localStorage.setItem('user_token', resposta.userToken);
-        this.$router.push('/dashboard');
+
+      if(this.form.email === ''){
+        this.alertError = 'Oops. Preencha seu e-mail!';
+        return;
+      }
+
+      if(this.form.password === ''){
+        this.alertError = 'Oops. Preencha sua senha!';
+        return;
+      }
+
+      window.axios
+      .post('/session', this.form)
+      .then(async (res) => {
+          const resposta = await res.data;
+          localStorage.setItem('user_token', resposta.userToken);
+          this.$router.push('/dashboard');
+        })
+      .catch((err) => {
+        this.alertError = 'E-mail e/ou senha incorretos!';
       })
     }
   }
