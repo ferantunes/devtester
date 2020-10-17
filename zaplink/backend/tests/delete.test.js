@@ -68,4 +68,42 @@ describe('DELETE /contacts', () => {
         });
     })
 
+    describe('Dado que não tenho acesso', () => {
+
+        let contact = {
+            name: 'Joaquim Xavier',
+            number: '11 987654321',
+            description: 'Corretor de Imóveis'
+        }
+        
+        let server;
+        let resposta;
+        let contactId;
+
+        before(async () => {
+            server = await init();
+
+            resposta = await server.inject({
+                method: 'POST',
+                url: '/contacts',
+                payload: contact,
+                headers: { 'Authorization': userToken }
+            });
+
+            contactId = resposta.result._id;
+        });
+
+        it('quando tento apagar esse contato', async () => {
+            resposta = await server.inject({
+                method: 'DELETE',
+                url: '/contacts/' + contactId,
+                headers: { 'Authorization': '123456789101112131415161' }
+            });
+        });
+
+        it('deve retornar 401', () => {
+            expect(resposta.statusCode).to.equal(401);
+        });
+    })
+
 });
