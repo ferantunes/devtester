@@ -1,5 +1,23 @@
 describe('Remover Contato', () => {
 
+    const user = { email: 'maria@ig.com.br', password: 'pwd123' }
+
+    before(() => {
+        cy.request({
+            method: 'POST',
+            url: 'http://localhost:3000/user',
+            headers: { 'Contenty-Type': 'application/json' },
+            body: user,
+            failOnStatusCode: false
+        }).then((response) => {
+            cy.log(JSON.stringify(response.body));
+        });
+
+        cy.doLogin(user.email, user.password);
+        cy.get('.dashboard', { timeout: 5000 }).should('be.visible')
+    })
+
+
     const contact = {
         name: 'Paul Gilbert',
         number: '41987123654',
@@ -12,7 +30,8 @@ describe('Remover Contato', () => {
                 method: 'POST',
                 url: 'http://localhost:3000/contacts',
                 headers: {
-                    'Content-Type': 'application/json'
+                    'Content-Type': 'application/json',
+                    'Authorization': localStorage.getItem('user_token')
                 },
                 body: contact,
                 failOnStatusCode: false
