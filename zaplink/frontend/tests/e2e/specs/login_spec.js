@@ -16,14 +16,41 @@ describe('Login', () => {
 
     context('Quando submeto credenciais validas', () => {
         before(() => {
-            cy.visit('/');
-            cy.get('input[name=email]').type(user.email);
-            cy.get('input[name=password]').type(user.password);
-            cy.get('#sigIn').click();
+            cy.doLogin(user.email, user.password);
         });
 
         it('Deve exibir a área logada', () => {
             cy.contains('h4', 'Seu gerenciador digital de contatos').should('be.visible');
+        });
+    });
+
+    context('Quando submeto senha incorreta', () => {
+        before(() => {
+            cy.doLogin(user.email, '123');
+        });
+
+        it('Deve exibir mensagem de alerta', () => {
+            cy.loginAlert('E-mail e/ou senha incorretos!').should('be.visible');
+        });
+    });
+
+    context('Quando submeto não informo o email', () => {
+        before(() => {
+            cy.doLogin('', '123');
+        });
+
+        it('Deve exibir mensagem de alerta', () => {
+            cy.loginAlert('Oops. Preencha seu e-mail!').should('be.visible');
+        });
+    });
+
+    context('Quando submeto não informo a senha', () => {
+        before(() => {
+            cy.doLogin(user.email, '');
+        });
+
+        it('Deve exibir mensagem de alerta', () => {
+            cy.loginAlert('Oops. Preencha sua senha!').should('be.visible');
         });
     });
 });
