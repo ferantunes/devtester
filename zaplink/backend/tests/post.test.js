@@ -8,6 +8,28 @@ const { before, describe, it } = exports.lab = Lab.script();
 describe('POST /contacts', () => {
 
     let resposta;
+    let userToken;
+
+    before(async () => {
+        const user = { email: 'fernanda@qaninja.com.br', password: 'pwd123' }
+
+        var server = await init();
+    
+        await server.inject({
+            method: 'POST',
+            url: '/user',
+            payload: user
+        });
+
+        resposta = await server.inject({
+            method: 'POST',
+            url: '/session',
+            payload: user
+        });
+
+        userToken = resposta.result.userToken;
+
+    })
 
     describe('quando o payload é nulo', () => {
         before(async () => {
@@ -16,7 +38,8 @@ describe('POST /contacts', () => {
             resposta = await server.inject({
                 method: 'POST',
                 url: '/contacts',
-                payload: null
+                payload: null,
+                headers: { 'Authorization': userToken }
             });
         });
     
@@ -38,7 +61,8 @@ describe('POST /contacts', () => {
             resposta = await server.inject({
                 method: 'POST',
                 url: '/contacts',
-                payload: contact
+                payload: contact,
+                headers: { 'Authorization': userToken }
             });
         });
     
@@ -65,7 +89,8 @@ describe('POST /contacts', () => {
             resposta = await server.inject({
                 method: 'POST',
                 url: '/contacts',
-                payload: contact
+                payload: contact,
+                headers: { 'Authorization': userToken }
             });
         });
 
@@ -91,7 +116,8 @@ describe('POST /contacts', () => {
             resposta = await server.inject({
                 method: 'POST',
                 url: '/contacts',
-                payload: contact
+                payload: contact,
+                headers: { 'Authorization': userToken }
             });
         });
 
@@ -116,7 +142,8 @@ describe('POST /contacts', () => {
             resposta = await server.inject({
                 method: 'POST',
                 url: '/contacts',
-                payload: contact
+                payload: contact,
+                headers: { 'Authorization': userToken }
             });
         });
 
@@ -142,7 +169,8 @@ describe('POST /contacts', () => {
             resposta = await server.inject({
                 method: 'POST',
                 url: '/contacts',
-                payload: contact
+                payload: contact,
+                headers: { 'Authorization': userToken }
             });
         });
 
@@ -167,7 +195,8 @@ describe('POST /contacts', () => {
             resposta = await server.inject({
                 method: 'POST',
                 url: '/contacts',
-                payload: contact
+                payload: contact,
+                headers: { 'Authorization': userToken }
             });
         });
 
@@ -193,7 +222,8 @@ describe('POST /contacts', () => {
             resposta = await server.inject({
                 method: 'POST',
                 url: '/contacts',
-                payload: contact
+                payload: contact,
+                headers: { 'Authorization': userToken }
             });
         });
 

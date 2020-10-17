@@ -8,13 +8,37 @@ const { before, describe, it } = exports.lab = Lab.script();
 describe('GET /contacts', () => {
 
     let res;
+    let userToken;
+
+    before(async () => {
+        const user = { email: 'franja@qaninja.com.br', password: 'pwd123' }
+
+        var server = await init();
+    
+        await server.inject({
+            method: 'POST',
+            url: '/user',
+            payload: user
+        });
+
+        resposta = await server.inject({
+            method: 'POST',
+            url: '/session',
+            payload: user,
+            headers: { 'Authorization': userToken }
+        });
+
+        userToken = resposta.result.userToken;
+
+    })
 
     before(async () => {
         var server = await init();
 
         res = await server.inject({
             method: 'GET',
-            url: '/contacts'
+            url: '/contacts',
+            headers: { 'Authorization': userToken }
         });
     });
 

@@ -7,6 +7,29 @@ const { before, describe, it } = exports.lab = Lab.script();
 
 describe('DELETE /contacts', () => {
 
+    let userToken;
+
+    before(async () => {
+        const user = { email: 'maribel@qaninja.com.br', password: 'pwd123' }
+
+        var server = await init();
+    
+        await server.inject({
+            method: 'POST',
+            url: '/user',
+            payload: user
+        });
+
+        resposta = await server.inject({
+            method: 'POST',
+            url: '/session',
+            payload: user
+        });
+
+        userToken = resposta.result.userToken;
+
+    })
+
     describe('Dado que eu tenho um contato indesejado', () => {
 
         let contact = {
@@ -25,7 +48,8 @@ describe('DELETE /contacts', () => {
             resposta = await server.inject({
                 method: 'POST',
                 url: '/contacts',
-                payload: contact
+                payload: contact,
+                headers: { 'Authorization': userToken }
             });
 
             contactId = resposta.result._id;
@@ -35,7 +59,7 @@ describe('DELETE /contacts', () => {
             resposta = await server.inject({
                 method: 'DELETE',
                 url: '/contacts/' + contactId,
-                payload: contact
+                headers: { 'Authorization': userToken }
             });
         });
 

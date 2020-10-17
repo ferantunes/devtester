@@ -5,7 +5,7 @@
   "main": "index.js",
   "scripts": {
     "dev": "nodemon server.js",
-    "test": "lab -v tests"
+    "test": "lab -v tests -I resposta"
   },
   "keywords": [
     "api",
