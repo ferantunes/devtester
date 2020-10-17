@@ -14,7 +14,7 @@
                 <form>
                     <div class="field">
                     <p class="control has-icons-left has-icons-right">
-                        <input class="input" type="email" placeholder="Seu email" />
+                        <input class="input" v-model="form.email" type="email" placeholder="Seu email" />
                         <span class="icon is-small is-left">
                         <i class="fas fa-envelope"></i>
                         </span>
@@ -25,11 +25,7 @@
                     </div>
                     <div class="field">
                     <p class="control has-icons-left">
-                        <input
-                        class="input"
-                        type="password"
-                        placeholder="Sua senha"
-                        />
+                        <input class="input" v-model="form.password" type="password" placeholder="Sua senha"/>
                         <span class="icon is-small is-left">
                         <i class="fas fa-lock"></i>
                         </span>
@@ -37,7 +33,7 @@
                     </div>
                     <div class="field">
                     <p class="control">
-                        <button class="button is-success">Entrar</button>
+                        <button type="button" @click="login()" class="button is-success">Entrar</button>
                     </p>
                     </div>
                 </form>
@@ -53,6 +49,30 @@
     </section>
   </div>
 </template>
+
+<script>
+export default {
+  name: 'Login',
+  data() {
+    return {
+      form: {
+        email: '',
+        password: ''
+      }
+    }
+  },
+  methods: {
+    login() {
+      // console.log(this.form);
+      window.axios.post('/session', this.form).then(async (res) => {
+        const resposta = await res.data;
+        localStorage.setItem('user_token', resposta.userToken);
+        this.$router.push('/dashboard');
+      })
+    }
+  }
+}
+</script>
 
 <style scoped>
 .login {
