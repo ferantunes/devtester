@@ -46,8 +46,10 @@ describe('Cadastro de Contatos', () => {
                 cy.createContact(contact);
             });
 
-            it('Deve mostrar uma notificação', () => {
-                cy.alertName().contains('Nome é obrigatório.');
+            const expectNotice = 'Nome é obrigatório.';
+
+            it(`Deve mostrar a notificação ${expectNotice}`, () => {
+                cy.alertName().contains(expectNotice);
             });
         });
 
@@ -62,8 +64,10 @@ describe('Cadastro de Contatos', () => {
                 cy.createContact(contact);
             });
 
-            it('Deve mostrar uma notificação', () => {
-                cy.alertNumber().contains('WhatsApp é obrigatório.');
+            const expectNotice = 'WhatsApp é obrigatório.';
+
+            it(`Deve mostrar a notificação ${expectNotice}`, () => {
+                cy.alertNumber().contains(expectNotice);
             });
         });
 
@@ -78,8 +82,10 @@ describe('Cadastro de Contatos', () => {
                 cy.createContact(contact);
             });
 
-            it('Deve mostrar uma notificação', () => {
-                cy.alertDescription().contains('Assunto é obrigatório.');
+            const expectNotice = 'Assunto é obrigatório.';
+
+            it(`Deve mostrar a notificação ${expectNotice}`, () => {
+                cy.alertDescription().contains(expectNotice);
             });
         });
     });

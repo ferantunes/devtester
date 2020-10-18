@@ -25,32 +25,41 @@ describe('Login', () => {
     });
 
     context('Quando submeto senha incorreta', () => {
+
+        const expectMessage = 'E-mail e/ou senha incorretos!';
+
         before(() => {
             cy.doLogin(user.email, '123');
         });
 
-        it('Deve exibir mensagem de alerta', () => {
-            cy.loginAlert('E-mail e/ou senha incorretos!').should('be.visible');
+        it(`Deve exibir a mensagem ${expectMessage}`, () => {
+            cy.loginAlert(expectMessage).should('be.visible');
         });
     });
 
     context('Quando submeto não informo o email', () => {
+        
+        const expectMessage = 'Oops. Preencha seu e-mail!';
+        
         before(() => {
             cy.doLogin('', '123');
         });
 
-        it('Deve exibir mensagem de alerta', () => {
-            cy.loginAlert('Oops. Preencha seu e-mail!').should('be.visible');
+        it(`Deve exibir a mensagem ${expectMessage}`, () => {
+            cy.loginAlert(expectMessage).should('be.visible');
         });
     });
 
     context('Quando submeto não informo a senha', () => {
+        
+        const expectMessage = 'Oops. Preencha sua senha!';
+        
         before(() => {
             cy.doLogin(user.email, '');
         });
 
-        it('Deve exibir mensagem de alerta', () => {
-            cy.loginAlert('Oops. Preencha sua senha!').should('be.visible');
+        it(`Deve exibir a mensagem ${expectMessage}`, () => {
+            cy.loginAlert(expectMessage).should('be.visible');
         });
     });
 });
