@@ -26,14 +26,12 @@ describe('Login', () => {
 
     context('Quando submeto senha incorreta', () => {
 
-        const expectMessage = 'E-mail e/ou senha incorretos!';
-
         before(() => {
             cy.doLogin(user.email, '123');
         });
 
-        it(`Deve exibir a mensagem ${expectMessage}`, () => {
-            cy.loginAlert(expectMessage).should('be.visible');
+        it('Deve exibir a mensagem - Email e ou senha incorretos', () => {
+            cy.loginAlert('E-mail e/ou senha incorretos!').should('be.visible');
         });
     });
 
@@ -45,7 +43,7 @@ describe('Login', () => {
             cy.doLogin('', '123');
         });
 
-        it(`Deve exibir a mensagem ${expectMessage}`, () => {
+        it(`Deve exibir a mensagem ${expectMessage.replace(/[^a-zA-Z ]/g, '')}`, () => {
             cy.loginAlert(expectMessage).should('be.visible');
         });
     });
@@ -58,7 +56,7 @@ describe('Login', () => {
             cy.doLogin(user.email, '');
         });
 
-        it(`Deve exibir a mensagem ${expectMessage}`, () => {
+        it(`Deve exibir a mensagem ${expectMessage.replace(/[^a-zA-Z ]/g, '')}`, () => {
             cy.loginAlert(expectMessage).should('be.visible');
         });
     });
